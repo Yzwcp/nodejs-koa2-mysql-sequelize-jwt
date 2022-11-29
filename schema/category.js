@@ -27,23 +27,26 @@ module.exports = function (sequelize, DataTypes) {
         },
         // 权重
         z_index: {
-            type: DataTypes.STRING(30),
+            type: DataTypes.INTEGER(100),
             field: 'z_index',
             default: 1,
-            allowNull: false
+            allowNull: false,
+            set(value) {
+                this.setDataValue('z_index', Number(value));
+            }
         },
         createdAt: {
             type: DataTypes.DATE,
-            field: 'created_at',
+            field: 'createdAt',
             get() {
-                return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD');
+                return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:MM:SS');
             }
         },
         updatedAt: {
-            field: 'updated_at',
+            field: 'updatedAt',
             type: DataTypes.DATE,
             get() {
-                return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD');
+                return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD HH:MM:SS');
             }
         }
     }, {

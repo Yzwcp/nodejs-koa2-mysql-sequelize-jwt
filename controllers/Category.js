@@ -11,7 +11,7 @@ class Category {
      * @returns 成功创建分类返回分类详情数据，失败返回错误信息
      */
     static async create(ctx) {
-        let {name, icon, parent_id, z_index} = ctx.request.body;
+        let { name, icon, parent_id, z_index } = ctx.request.body;
 
         let params = {
             name,
@@ -41,7 +41,7 @@ class Category {
         try {
             params.z_index = z_index || "10";
             params.parent_id = parent_id || 0;
-            const {id} = await CategoryModel.create(params);
+            const { id } = await CategoryModel.create(params);
             const data = await CategoryModel.detail(id);
 
             ctx.response.status = 200;
@@ -52,11 +52,12 @@ class Category {
             }
 
         } catch (err) {
+            console.log(err);
             ctx.response.status = 500;
             ctx.body = {
                 code: 500,
                 message: `创建分类失败`,
-                data: err
+                data: JSON.stringify(err)
             }
         }
 
@@ -95,7 +96,7 @@ class Category {
      * @returns 分类列表数据
      */
     static async list(ctx) {
-        let {include} = ctx.query;
+        let { include } = ctx.query;
 
         try {
             let data = null;
@@ -135,7 +136,7 @@ class Category {
      * @returns 文章列表数据
      */
     static async article(ctx) {
-        let {id} = ctx.params;
+        let { id } = ctx.params;
 
         // 检测是否传入ID
         if (!id) {
@@ -185,7 +186,7 @@ class Category {
      * @returns 分类详情
      */
     static async detail(ctx) {
-        let {id} = ctx.params;
+        let { id } = ctx.params;
 
         // 检测是否传入ID
         if (!id) {
@@ -235,7 +236,7 @@ class Category {
      * @returns 删除成功返回true，失败返回错误信息
      */
     static async delete(ctx) {
-        let {id} = ctx.params;
+        let { id } = ctx.params;
 
         // 检测是否传入ID
         if (!id) {
@@ -302,7 +303,7 @@ class Category {
      * @returns 更新成功返回更新后的数据，失败返回错误信息
      */
     static async update(ctx) {
-        let {id} = ctx.params;
+        let { id } = ctx.params;
 
         // 检测是否传入ID
         if (!id) {
@@ -325,7 +326,7 @@ class Category {
             return false;
         }
 
-        let {name, icon, parent_id, z_index = 10} = ctx.request.body;
+        let { name, icon, parent_id, z_index = 10 } = ctx.request.body;
         let params = {
             name,
             icon,

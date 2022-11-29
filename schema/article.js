@@ -37,6 +37,11 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING(255),
             allowNull: false,
             field: 'cover'
+        },// 文章封面
+        categoryId: {
+            type: DataTypes.STRING(255),
+            allowNull: false,
+            field: 'categoryId'
         },
         // 文章内容
         content: {
@@ -60,16 +65,16 @@ module.exports = function (sequelize, DataTypes) {
         },
         createdAt: {
             type: DataTypes.DATE,
-            field: 'created_at',
+            field: 'createdAt',
             get() {
-                return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD');
+                return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:MM:SS');
             }
         },
         updatedAt: {
             type: DataTypes.DATE,
-            field: 'updated_at',
+            field: 'updatedAt',
             get() {
-                return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD');
+                return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD HH:MM:SS');
             }
         }
     }, {

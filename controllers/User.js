@@ -16,7 +16,7 @@ class User {
      * @returns 创建成功返回用户信息，失败返回错误信息
      */
     static async create(ctx) {
-        let {username, password, email, roles_id = 0} = ctx.request.body;
+        let { username, password, email, roles_id = 0 } = ctx.request.body;
 
         let params = {
             username,
@@ -73,7 +73,7 @@ class User {
                 }
 
                 // 储存token失效有效期1小时
-                const token = jwt.sign(userToken, secret.sign, {expiresIn: '1h'});
+                const token = jwt.sign(userToken, secret.sign, { expiresIn: '1h' });
 
                 ctx.response.status = 200;
                 ctx.body = {
@@ -143,7 +143,7 @@ class User {
      * @returns  删除成功返回true，失败返回错误原因
      */
     static async delete(ctx) {
-        let {id} = ctx.params;
+        let { id } = ctx.params;
 
         // 检测是否传入ID
         if (!id) {
@@ -192,7 +192,7 @@ class User {
      * @returns 登录成功返回用户信息，失败返回错误原因
      */
     static async login(ctx) {
-        const {username, email, password} = ctx.request.body
+        const { username, email, password } = ctx.request.body
         // 查询用户
         const userDetail = await UserModel.username(username)
 
@@ -216,9 +216,82 @@ class User {
                 email: userDetail.email,
             }
             // 签发token
-            const token = jwt.sign(userToken, secret.sign, {expiresIn: '1h'});
+            const token = jwt.sign(userToken, secret.sign, { expiresIn: '1h' });
 
             ctx.response.status = 200;
+            const menuList = [{
+                children: [
+                    {
+                        id: 100,
+                        name: "用户管理",
+                        sort: 1,
+                        parentId: 1,
+                        type: 2,
+                        url: "/main/system/user",
+                        children: [
+                            {
+                                id: 1000,
+                                name: "添加用户",
+                                parentId: 100,
+                                permission: 'system:user:delete',
+                                sort: null,
+                                type: 3,
+                                url: null,
+                            }
+                        ]
+                    }
+                ],
+                icon: "el-icon-monitor",
+                id: 1,
+                name: "系统管理",
+                sort: 1,
+                type: 1,
+                url: "/main/system",
+            }, {
+                children: [
+                    {
+                        id: 200,
+                        name: "javascript",
+                        sort: 1,
+                        parentId: 2,
+                        type: 2,
+                        url: "/main/javascript/block",
+                    }
+                ],
+                icon: "el-icon-monitor",
+                id: 2,
+                name: "代码块",
+                sort: 1,
+                type: 1,
+                url: "/main/javascript",
+            }, {
+                children: [
+                    {
+                        id: 300,
+                        name: "文章列表",
+                        icon: 'Memo',
+                        sort: 1,
+                        parentId: 3,
+                        type: 2,
+                        url: "/main/code/list",
+                    },
+                    {
+                        id: 400,
+                        name: "编辑文章",
+                        icon: 'EditPen',
+                        sort: 2,
+                        parentId: 3,
+                        type: 2,
+                        url: "/main/code/edit",
+                    }
+                ],
+                icon: "Document",
+                id: 3,
+                name: "文章",
+                sort: 1,
+                type: 1,
+                url: "/main/code",
+            }]
             ctx.body = {
                 code: 200,
                 message: "登录成功",
@@ -226,7 +299,8 @@ class User {
                     id: userDetail.id,
                     username: userDetail.username,
                     email: userDetail.email,
-                    token: token
+                    token: token,
+                    menuList,
                 }
             }
 
@@ -246,7 +320,7 @@ class User {
      * @returns 用户列表数据
      */
     static
-    async list(ctx) {
+        async list(ctx) {
         try {
             const data = await UserModel.findAllUserList();
 
